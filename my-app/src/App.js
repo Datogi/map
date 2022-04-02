@@ -49,7 +49,7 @@ function App() {
   setlat(position.coords.latitude)
   }
   async function fetchData(latitude, longitude){
-    const key = "2ab63bb70d8b7661c220ecea6ce0408b"
+    const key = "583e19073b11a4e1f4b0d0c0a59ca92a"
     const data = await fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${key}&units=metric`); 
     if(data.status == 200){
       const res = await data.json();
@@ -70,6 +70,9 @@ function App() {
 useEffect(()=>{
   getLocation()
 },[correctCor])
+useEffect(() => {
+ popupInfo&& fetchData(popupInfo.latitude, popupInfo.longitude)
+},[popupInfo])
   return ( 
  
      <Map
@@ -90,7 +93,13 @@ useEffect(()=>{
             onClose={() => setPopupInfo(null)}
           >
           <p>{popupInfo.name}</p>
-        </Popup>)}
+        </Popup>
+        )}
+        {showPopup &&(<Popup longitude={lng} latitude={lat}
+        anchor="bottom"
+        onClose={() => setShowPopup(false)}>
+       <p className='location-text'>You are here</p> 
+      </Popup>)}
       <ScaleControl />
       <GeolocateControl position="top-left" />
       <FullscreenControl position="top-left" />
