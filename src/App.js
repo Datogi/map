@@ -1,7 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState,useMemo } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Map, {Popup,ScaleControl,FullscreenControl, GeolocateControl,Marker, NavigationControl} from 'react-map-gl';
-
+import Pin from './components/Pin'
+import CITIES  from './components/data.json'
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF0bzIwNyIsImEiOiJjbDE3b3Fic3QwcnVqM2JzMXlzeW83cDRkIn0.f5yKQuQBcHfxs4CRwZXI-g';
@@ -16,8 +17,23 @@ function App() {
   const [correctCor, setCorrectCor] = useState(false)
   const [lng, setlng] = useState(-1)
   const [lat, setlat] = useState(-1)
+  const [popupInfo, setPopupInfo] = useState(null);
 
 
+  const pins = useMemo(
+    () =>
+      CITIES.map((city, index) => (
+        <Marker
+          key={`marker-${index}`}
+          longitude={city.longitude}
+          latitude={city.latitude}
+          anchor="bottom"
+        >
+          <Pin onClick={() => setPopupInfo(city)} />
+        </Marker>
+      )),
+    []
+  );
 
  function getLocation() {
     if (navigator.geolocation) {
@@ -65,16 +81,21 @@ useEffect(()=>{
     style={{width:FullscreenControl, height:600}}
     mapStyle="mapbox://styles/mapbox/streets-v9"
   >
-    {showPopup && (
-      <Popup longitude={lng} latitude={lat}
-        anchor="bottom"
-        onClose={() => setShowPopup(false)}>
-       <p className='location-text'>You are here</p> 
-      </Popup>)}
+    {popupInfo && (
+        <Popup
+            anchor="top"
+            longitude={Number(popupInfo.longitude)}
+            latitude={Number(popupInfo.latitude)}
+            closeOnClick={false}
+            onClose={() => setPopupInfo(null)}
+          >
+          <p>{popupInfo.name}</p>
+        </Popup>)}
       <ScaleControl />
       <GeolocateControl position="top-left" />
       <FullscreenControl position="top-left" />
       <NavigationControl position="top-left" />
+      {pins}
   
       {correctCor &&
       <div className="container">
@@ -104,10 +125,5 @@ useEffect(()=>{
     
   );
 }
-/*
- 
-  
 
-{ correctCor &&
-      }*/
 export default App;

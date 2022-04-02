@@ -1,0 +1,20 @@
+[
+    {
+        "name":"Kutaisi",    
+        "latitude":42.25,
+        "longitude":42.7
+    
+    },
+    {
+        "name":"Tbilisi",
+        "longitude": 44.8, 
+        "latitude": 41.6825	
+      
+    },
+    {
+        "name":"Batumi",
+        "longitude": 41.645833, 
+        "latitude":	41.601667
+    }
+    
+]
