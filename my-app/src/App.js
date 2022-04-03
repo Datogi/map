@@ -4,9 +4,7 @@ import Map, {Popup,ScaleControl,FullscreenControl, GeolocateControl,Marker, Navi
 import Pin from './components/Pin'
 import CITIES  from './components/data.json'
 
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF0bzIwNyIsImEiOiJjbDE3b3Fic3QwcnVqM2JzMXlzeW83cDRkIn0.f5yKQuQBcHfxs4CRwZXI-g';
-
 
 
 
@@ -18,7 +16,7 @@ function App() {
   const [lng, setlng] = useState(-1)
   const [lat, setlat] = useState(-1)
   const [popupInfo, setPopupInfo] = useState(null);
-
+ 
 
   const pins = useMemo(
     () =>
@@ -73,8 +71,12 @@ useEffect(()=>{
 useEffect(() => {
  popupInfo&& fetchData(popupInfo.latitude, popupInfo.longitude)
 },[popupInfo])
+
+
+
+
   return ( 
- 
+    <>
      <Map
   initialViewState={{
       longitude: 0, 
@@ -92,7 +94,7 @@ useEffect(() => {
             closeOnClick={false}
             onClose={() => setPopupInfo(null)}
           >
-          <p>{popupInfo.name}</p>
+          <div><p>{popupInfo.name}</p></div>
         </Popup>
         )}
         {showPopup &&(<Popup longitude={lng} latitude={lat}
@@ -128,10 +130,11 @@ useEffect(() => {
             </div>
         </div>
     </div>}
+
   </Map>
+       
   
-  
-    
+    </>
   );
 }
 

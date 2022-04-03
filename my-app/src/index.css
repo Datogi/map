@@ -81,3 +81,9 @@
   font-size: large;
   color: rgb(206, 133, 38);
 }
+.control-panel{
+  background-color: wheat;
+  position: absolute;
+  top: 0;
+  left: 50%;
+}
